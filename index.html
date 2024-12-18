@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Warpcast Raffle Frame</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+      background-color: #f4f4f9;
+      color: #333;
+    }
+
+    .container {
+      max-width: 400px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+    }
+
+    button {
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      margin: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    .message {
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Warpcast Raffle</h1>
+    <p>To join the raffle, like, recast, or follow!</p>
+    <button id="likeBtn">Verify Like</button>
+    <button id="recastBtn">Verify Recast</button>
+    <button id="followBtn">Verify Follow</button>
+    <div class="message" id="message"></div>
+  </div>
+
+  <script>
+    async function verifyAction(actionType) {
+      const messageElement = document.getElementById('message');
+      messageElement.textContent = 'Verifying...';
+
+      try {
+        // Simulate API verification (replace with real API calls)
+        const response = await fetch(`https://mock-api.warpcast.com/verify?action=${actionType}`, {
+          method: 'GET',
+        });
+
+        if (!response.ok) {
+          throw new Error('Verification failed');
+        }
+
+        const data = await response.json();
+
+        if (data.success) {
+          messageElement.textContent = `${actionType} verified! You are entered in the raffle.`;
+        } else {
+          messageElement.textContent = `Please ${actionType} the post first.`;
+        }
+      } catch (error) {
+        messageElement.textContent = 'Error verifying action. Please try again.';
+      }
+    }
+
+    document.getElementById('likeBtn').addEventListener('click', () => verifyAction('like'));
+    document.getElementById('recastBtn').addEventListener('click', () => verifyAction('recast'));
+    document.getElementById('followBtn').addEventListener('click', () => verifyAction('follow'));
+  </script>
+</body>
+
+</html>
